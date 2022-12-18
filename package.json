@@ -1,0 +1,12 @@
+{
+  "name": "nodejs-challenge",
+  "version": "1.0.0",
+  "dependencies": {
+    "axios": "^0.25.0",
+    "debug": "^4.3.3"
+  },
+  "scripts": {
+    "start": "node app.js",
+    "dev": "DEBUG=challenge node app.js"
+  }
+}
