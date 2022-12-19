@@ -19,14 +19,18 @@ const run = async () => {
 
   let validUrlStations = stationModel.getValidUrlStations();
   let InValidUrlStations = stationModel.getInValidUrlStations();
+  let validStationsByCategories = stationModel.getValidStationsByCategories();
 
+  console.log(stationModel.getAll().length);
   console.log(validUrlStations.length);
   console.log(InValidUrlStations.length);
+  console.log(validStationsByCategories);
+
 
 };
 
 const tsStart = Date.now();
 debug(`Application started`);
 run()
-    .then(() => debug(`Application finished %s`, Date.now() - tsStart))
-    .catch(console.error);
+  .then(() => debug(`Application finished %s`, Date.now() - tsStart))
+  .catch(console.error);
