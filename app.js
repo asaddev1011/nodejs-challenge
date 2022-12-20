@@ -12,15 +12,33 @@ const run = async () => {
    * Define your solution here
    */
 
-  // total categories -> categoryModel.getAll().length
-  // total stations -> stationModel.getAll().length
+  const validStationsUrl = stationModel.getStationsUrl(true);
+  const InValidStationsUrl = stationModel.getStationsUrl(false);
 
-  let validStationsUrl = stationModel.getStationsUrl(true);
-  let InValidStationsUrl = stationModel.getStationsUrl(false);
-  let validStationsByCategories = stationModel.getStationsByGroupCategories(false);
+  const validStationsByCategories = stationModel.getStationsByGroupCategories(true);
+  const inValidStationsByCategories = stationModel.getStationsByGroupCategories(false);
 
-  stationModel.getStationsCountByCategories(validStationsByCategories);
+  console.log(`Total no. of stations: ${stationModel.getAll().length}`);
 
+  console.log(`Total no. of cagtegories: ${categoryModel.getAll().length}`);
+
+  console.log(`Total no. of stations with valid stream url: ${validStationsUrl.length}`);
+
+  console.log(`Total no. of stations with inValid stream url: ${InValidStationsUrl.length}`);
+
+  /* To see the List of stations with valid stram url uncomment the below console.log */
+  // console.log(validStationsUrl);
+  // console.log(InValidStationsUrl);
+
+  /* List of stations with valid stream url is valid category wise uncomment to see it */
+  // console.log(validStationsByCategories);
+  // console.log(inValidStationsByCategories);
+
+  console.log('Category wise count of valid stream url stations');
+  console.log(stationModel.getStationsCountByCategories(validStationsByCategories));
+
+  console.log('Category wise count of inValid stream url stations');
+  console.log(stationModel.getStationsCountByCategories(inValidStationsByCategories));
 
 };
 

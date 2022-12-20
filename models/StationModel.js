@@ -32,6 +32,7 @@ module.exports = class StationModel extends BaseModel {
       .pop();
   }
 
+  // RegEx for validating URL and we can enforce more rules as per our requirements
   isValidUrl(url) {
     const pattern = new RegExp(
       '^([a-zA-Z]+:\\/\\/)?' + // protocol
@@ -53,7 +54,7 @@ module.exports = class StationModel extends BaseModel {
       });
   }
 
-  // return which station's `stream_url` is valid and which is not. And group them
+  // return which station's `stream_url` is valid or which is not. And group them
   getStationsByGroupCategories(isValid) {
 
     return this.getAll().reduce((obj, el) => {
@@ -83,7 +84,6 @@ module.exports = class StationModel extends BaseModel {
       stationsCountCategoryWise.push({ 'category': key, 'count': data[key].length });
     }
 
-    console.log(stationsCountCategoryWise);
     return stationsCountCategoryWise;
   }
 
