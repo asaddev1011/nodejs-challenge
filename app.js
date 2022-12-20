@@ -15,16 +15,11 @@ const run = async () => {
   // total categories -> categoryModel.getAll().length
   // total stations -> stationModel.getAll().length
 
-  // let temp = stationModel.getByKey('innervisions');
+  let validStationsUrl = stationModel.getStationsUrl(true);
+  let InValidStationsUrl = stationModel.getStationsUrl(false);
+  let validStationsByCategories = stationModel.getStationsByGroupCategories(false);
 
-  let validUrlStations = stationModel.getValidUrlStations();
-  let InValidUrlStations = stationModel.getInValidUrlStations();
-  let validStationsByCategories = stationModel.getValidStationsByCategories();
-
-  console.log(stationModel.getAll().length);
-  console.log(validUrlStations.length);
-  console.log(InValidUrlStations.length);
-  console.log(validStationsByCategories);
+  stationModel.getStationsCountByCategories(validStationsByCategories);
 
 
 };

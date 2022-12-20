@@ -41,24 +41,20 @@ module.exports = class StationModel extends BaseModel {
       '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
       'i'
     );
+
     return pattern.test(url);
   }
 
-  getValidUrlStations() {
+  // return list of stations based on valid/inValid URL check
+  getStationsUrl(isValid) {
     return this.getAll()
       .filter((el) => {
-        return this.isValidUrl(el.stream_url) === true
+        return this.isValidUrl(el.stream_url) === isValid
       });
   }
 
-  getInValidUrlStations() {
-    return this.getAll()
-      .filter((el) => {
-        return this.isValidUrl(el.stream_url) === false
-      });
-  }
-
-  getValidStationsByCategories() {
+  // return which station's `stream_url` is valid and which is not. And group them
+  getStationsByGroupCategories(isValid) {
 
     return this.getAll().reduce((obj, el) => {
       // Get the category of the station
@@ -69,14 +65,26 @@ module.exports = class StationModel extends BaseModel {
         obj[stationCategory] = [];
       }
 
-      // push obj only if it has the valid URL
-      if (this.isValidUrl(el.stream_url)) {
+      // push obj only if it has the valid/inValid URL
+      if (isValid && this.isValidUrl(el.stream_url) || !isValid && !this.isValidUrl(el.stream_url)) {
         obj[stationCategory].push(el);
       }
 
       return obj;
     }, {});
+  }
 
+  // return total number of valid & invalid stations per category
+  getStationsCountByCategories(data) {
+
+    let stationsCountCategoryWise = [];
+
+    for (let key in data) {
+      stationsCountCategoryWise.push({ 'category': key, 'count': data[key].length });
+    }
+
+    console.log(stationsCountCategoryWise);
+    return stationsCountCategoryWise;
   }
 
 }
