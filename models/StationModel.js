@@ -1,4 +1,5 @@
 const BaseModel = require("./BaseModel");
+const http = require('http');
 
 module.exports = class StationModel extends BaseModel {
   constructor() {
@@ -46,12 +47,38 @@ module.exports = class StationModel extends BaseModel {
     return pattern.test(url);
   }
 
+  isUrlStreaming(url) {
+
+    http.request(url, { method: 'HEAD' }, (res) => {
+      if (res.headers["content-type"] === 'audio/mpeg') {
+        console.log('\x1b[32m%s\x1b[0m', `${url} live radio streaming...`);
+      } else {
+        console.log(`${url} no audio streaming`);
+      };
+    }).on('error', (err) => {
+      return false;
+    }).end();
+
+    return;
+
+  }
+
   // return list of stations based on valid/inValid URL check
-  getStationsUrl(isValid) {
-    return this.getAll()
+  getStationsValidAndStreaming(isValid) {
+
+    const validStationList = this.getAll()
       .filter((el) => {
         return this.isValidUrl(el.stream_url) === isValid
       });
+
+    const promises = validStationList
+      .filter((el) => {
+        return this.isUrlStreaming(el.stream_url) === isValid
+      });
+
+    Promise.all(promises).then((data) => {
+      return data;
+    });
   }
 
   // return which station's `stream_url` is valid or which is not. And group them
@@ -67,7 +94,8 @@ module.exports = class StationModel extends BaseModel {
       }
 
       // push obj only if it has the valid/inValid URL
-      if (isValid && this.isValidUrl(el.stream_url) || !isValid && !this.isValidUrl(el.stream_url)) {
+      if (isValid && this.isValidUrl(el.stream_url) ||
+        !isValid && !this.isValidUrl(el.stream_url)) {
         obj[stationCategory].push(el);
       }
 
